@@ -4,7 +4,6 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -14,9 +13,6 @@ import (
 	"strings"
 	"time"
 )
-
-var key string
-var port int = DefaultPort
 
 func writeFile(r io.Reader, fn string, size int64) {
 	f, err := os.OpenFile(fn, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
@@ -101,11 +97,7 @@ func waitClients() {
 	}
 }
 
-func main() {
-	flag.StringVar(&key, "k", "", "key to receive files")
-	flag.IntVar(&port, "p", port, "TCP port")
-	flag.Parse()
-
+func receiveFiles() {
 	fmt.Println("Waiting for files...")
 	if key != "" {
 		fmt.Printf("(Use key '%s' to receive files)\n", key)

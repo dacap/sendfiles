@@ -4,7 +4,6 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -14,9 +13,6 @@ import (
 	"strings"
 	"time"
 )
-
-var key string
-var port int = DefaultPort
 
 func sendFile(conn net.Conn, fn string) {
 	f, err := os.Open(fn)
@@ -30,7 +26,7 @@ func sendFile(conn net.Conn, fn string) {
 	}
 }
 
-func connectToServer(ip net.IP) {
+func connectToServer(ip net.IP, files []string) {
 	conn, err := net.Dial("tcp", ip.String() + ":" + strconv.Itoa(port))
 	if err != nil {
 		return
@@ -56,7 +52,7 @@ func connectToServer(ip net.IP) {
 			return
 		}
 
-		for _, fn := range flag.Args() {
+		for _, fn := range files {
 			fmt.Printf("Sending %s to %s...", fn, ip.String())
 
 			fi, err := os.Stat(fn)
@@ -79,31 +75,28 @@ func connectToServer(ip net.IP) {
 	}
 }
 
-func scanIps() {
+func scanIps(files []string) {
 	ips := getIpAddresses(make([]net.IP, 0))
 	for _, ip := range ips {
 		ip4 := ip.To4()
 		if ip4 != nil && ip4[0] == 192 && ip4[1] == 168 {
 			for i := 0; i <= 255; i++ {
 				serverIp4 := net.IPv4(ip4[0], ip4[1], ip4[2], byte(i))
-				go connectToServer(serverIp4)
+				go connectToServer(serverIp4, files)
 			}
 		}
 	}
 }
 
-func main() {
-	flag.StringVar(&key, "k", "", "key to receive files")
-	flag.IntVar(&port, "p", port, "TCP port")
-	flag.Parse()
-	if flag.NArg() < 1 {
+func sendFiles(files []string) {
+	if len(files) < 1 {
 		fmt.Println("You must specify at least one file to send")
 		return
 	}
 
 	fmt.Println("Searching for receiver...")
 
-	go scanIps()
+	go scanIps(files)
 
 	// Wait for Enter key
 	bufio.NewReader(os.Stdin).ReadString('\n')

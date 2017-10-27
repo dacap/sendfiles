@@ -1,9 +1,18 @@
 # Copyright (C) 2017 David Capello
 
-all: bin/sendfiles bin/receivefiles
+all: sendfiles
 
-bin/sendfiles: sendfiles.go sha1.go ip.go
+SENDFILES_SRC = sendfiles.go receivefiles.go main.go sha1.go ip.go
+
+sendfiles: $(SENDFILES_SRC)
 	go build -o $@ $^
 
-bin/receivefiles: receivefiles.go sha1.go ip.go
-	go build -o $@ $^
+cross:
+	env GOOS=windows GOARCH=386 go build -v -o win/sendfiles.exe $(SENDFILES_SRC)
+	env GOOS=darwin GOARCH=386 go build -v -o mac/sendfiles $(SENDFILES_SRC)
+	env GOOS=linux GOARCH=386 go build -v -o lin/sendfiles $(SENDFILES_SRC)
+
+package: cross
+	cd win && zip sendfiles-macosx.zip sendfiles && cd ..
+	cd mac && zip sendfiles-windows.zip sendfiles.exe && cd ..
+	cd lin && zip sendfiles-linux.zip sendfiles && cd ..

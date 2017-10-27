@@ -6,13 +6,13 @@ A program to send/receive files between two personal computers.
 
 ## Usage
 
-We run the `receivefiles` in computer *A*:
+We run the `sendfiles -r` in computer *A* to receive files:
 
-    receivefiles
+    sendfiles receive
 
 And in other computer *B* we specify the files to transfer:
 
-    sendfiles package-windows.zip package-linux.zip
+    sendfiles send package-windows.zip package-linux.zip
 
 This will send `package-windows.zip` and `package-linux.zip` files
 from *B* to *A*. The IP of *A* is located automatically by *B* with a
@@ -21,8 +21,8 @@ scan of IP addresses in the local network and the TCP port 8095
 
 ## Key
 
-`receivefiles` and `sendfiles` can receive a key parameter (`-k string`)
-to match computers with the same key. The key is not used to encrypt data.
+`sendfiles` can receive a key parameter (`-k string`) to match
+computers with the same key. The key is not used to encrypt data.
 
 ## Plain data/key
 
