@@ -12,7 +12,7 @@ cross:
 	env GOOS=darwin GOARCH=386 go build -v -o mac/sendfiles $(SENDFILES_SRC)
 	env GOOS=linux GOARCH=386 go build -v -o lin/sendfiles $(SENDFILES_SRC)
 
-package: cross
-	cd win && zip sendfiles-macosx.zip sendfiles && cd ..
-	cd mac && zip sendfiles-windows.zip sendfiles.exe && cd ..
-	cd lin && zip sendfiles-linux.zip sendfiles && cd ..
+package:
+	cd win && zip ../sendfiles-windows.zip sendfiles.exe && cd ..
+	cd mac && zip ../sendfiles-macosx.zip sendfiles && cd ..
+	cd lin && zip ../sendfiles-linux.zip sendfiles && cd ..
