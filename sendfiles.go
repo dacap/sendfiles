@@ -9,6 +9,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -61,9 +62,10 @@ func connectToServer(ip net.IP, files []string) {
 				continue;
 			}
 
+			_, fnOnly := filepath.Split(fn)
 			fmt.Fprintf(conn,
 				"file %s size %d sha1 %s\n",
-				fn, fi.Size(), fileSha1(fn))
+				fnOnly, fi.Size(), fileSha1(fn))
 
 			sendFile(conn, fn)
 			fmt.Printf(" OK\n")

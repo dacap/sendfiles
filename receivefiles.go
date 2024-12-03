@@ -9,10 +9,20 @@ import (
 	"log"
 	"net"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 )
+
+func FileExists(fn string) bool {
+	if _, err := os.Stat(fn); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
+}
 
 func writeFile(r io.Reader, fn string, size int64) {
 	f, err := os.OpenFile(fn, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
@@ -66,15 +76,26 @@ func handleConnection(conn net.Conn) {
 
 		fmt.Printf("Receiving file %s (%d bytes)...", fn, size)
 
-		localFn := strings.Replace(fn, "/", "-", -1)
-		localFn = "_received_" + localFn
+		localFn := filepath.Clean(fn)
+		localFnBase := localFn
+
+		count := 1
+		for FileExists(localFn) {
+			extension := filepath.Ext(localFnBase)
+			localFn = fmt.Sprintf("%s (%d).%s",
+				strings.TrimSuffix(localFnBase, extension),
+				count,
+				extension)
+			count++
+		}
+
 		writeFile(reader, localFn, size)
 
 		localSha1 := fileSha1(localFn)
 		if sha1 == localSha1 {
-			fmt.Printf(" OK\n")
+			fmt.Printf("\n OK, saved in %s\n", localFn)
 		} else {
-			fmt.Printf(" checksum FAILED\n")
+			fmt.Printf("\n checksum FAILED\n")
 			fmt.Printf("   local  SHA1: %s\n", localSha1)
 			fmt.Printf("   remote SHA1: %s\n", sha1)
 		}
