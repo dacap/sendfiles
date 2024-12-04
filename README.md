@@ -38,22 +38,23 @@ between computers. There is zero encryption.
 
 ## Protocol
 
-Client scan IP addresses in the local network tries to connect to the
-TCP port 8095, after it's connected it sends one line:
+The client scans IP addresses in the local network, and tries to
+connect to each one through the TCP port 8095. When it is connected,
+it sends one line:
 
     key STRING\n
 
-Server responds with:
+If the key is accepted, the server/receiver will respond with:
 
     ok\n
 
-when the key is accepted and the client can start sending files, or
+and the client can start sending files. In other case the server will respond:
 
     invalid key\n
 
-if the connection will be terminate.
+and the connection will be terminated.
 
-When the key is accepted, the client start sending files:
+When the key is accepted, the client sends files following this protocol:
 
     file FILENAME size INT64 sha1 STRING\n
     BYTES[size]\n
