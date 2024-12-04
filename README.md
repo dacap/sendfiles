@@ -1,6 +1,9 @@
 # sendfiles
 
 > Copyright (C) 2017-2024 David Capello
+>
+> This project is released under the terms of the MIT license.
+> Read [LICENSE.txt](LICENSE.txt) for more information.
 
 A program to send/receive files between two personal computers.
 
