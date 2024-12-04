@@ -7,6 +7,10 @@ SENDFILES_SRC = sendfiles.go receivefiles.go main.go sha1.go ip.go
 sendfiles: $(SENDFILES_SRC)
 	go build -o $@ $^
 
+clean:
+	-rm -f sendfiles.exe sendfiles windows/sendfiles.exe macos/sendfiles linux/sendfiles
+	-rmdir windows macos linux
+
 cross:
 	env GOOS=windows GOARCH=amd64 go build -v -o windows/sendfiles.exe $(SENDFILES_SRC)
 	env GOOS=darwin GOARCH=amd64 go build -v -o macos/sendfiles $(SENDFILES_SRC)
