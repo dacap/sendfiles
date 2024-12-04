@@ -4,7 +4,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 )
 
 var key string
@@ -16,15 +15,9 @@ func main() {
 	flag.Parse()
 
 	if flag.NArg() < 1 {
-		fmt.Println("You must specify the command send|receive")
-		return
-	}
-
-	switch flag.Arg(0) {
-	case "send":
-		sendFiles(flag.Args()[1:])
-	case "receive":
 		receiveFiles()
+	} else {
+		sendFiles(flag.Args())
 	}
 
 }
