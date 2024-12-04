@@ -8,11 +8,11 @@ sendfiles: $(SENDFILES_SRC)
 	go build -o $@ $^
 
 cross:
-	env GOOS=windows GOARCH=386 go build -v -o win/sendfiles.exe $(SENDFILES_SRC)
-	env GOOS=darwin GOARCH=386 go build -v -o mac/sendfiles $(SENDFILES_SRC)
-	env GOOS=linux GOARCH=386 go build -v -o lin/sendfiles $(SENDFILES_SRC)
+	env GOOS=windows GOARCH=amd64 go build -v -o windows/sendfiles.exe $(SENDFILES_SRC)
+	env GOOS=darwin GOARCH=amd64 go build -v -o macos/sendfiles $(SENDFILES_SRC)
+	env GOOS=linux GOARCH=amd64 go build -v -o linux/sendfiles $(SENDFILES_SRC)
 
 package:
-	cd win && zip ../sendfiles-windows.zip sendfiles.exe && cd ..
-	cd mac && zip ../sendfiles-macosx.zip sendfiles && cd ..
-	cd lin && zip ../sendfiles-linux.zip sendfiles && cd ..
+	cd windows && zip ../sendfiles-windows.zip sendfiles.exe && cd ..
+	cd macos && zip ../sendfiles-macosx.zip sendfiles && cd ..
+	cd linux && zip ../sendfiles-linux.zip sendfiles && cd ..
