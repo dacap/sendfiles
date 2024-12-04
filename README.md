@@ -19,15 +19,17 @@ And in other computer *B* we specify the files to transfer:
 
 This will send `file1.zip` and `file2.zip` files from *B* to *A*. The
 IP of *A* is located automatically by *B* with a scan of IP addresses
-in the local network and the TCP port 8095 (we can change this port
-with the `-p` argument).
+in the local network and the TCP port 8095.
 
-## Key
+## Usage
 
-`sendfiles` can receive a key parameter (`-k string`) to match
-computers with the same key. The key is not used to encrypt data.
+    sendfiles [-p PORT] [-k PASSWORD] [file1 [file2...]]
 
-## Plain data/key
+* `-p PORT` specify a specific TCP port to use (8095 by default)
+* `-k PASSWORD` uses a password/key to match computers that use/known
+  the same password. This key is not used to encrypt data (yet).
+
+## Warning: Plain data/key
 
 All information will be transferred in plain data over the network
 between computers. There is zero encryption.
