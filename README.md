@@ -23,9 +23,11 @@ in the local network and the TCP port 8095.
 
 ## Usage
 
-    sendfiles [-p PORT] [-k PASSWORD] [file1 [file2...]]
+    sendfiles [-ip ADDRESS] [-p PORT] [-k PASSWORD] [file1 [file2...]]
 
-* `-p PORT` specify a specific TCP port to use (8095 by default)
+* `-ip ADDRESS` connects to the given IP address of the receiver (scan
+  IPs automatically otherwise)
+* `-p PORT` TCP port to use for the connection (8095 by default)
 * `-k PASSWORD` uses a password/key to match computers that use/known
   the same password. This key is not used to encrypt data (yet).
 

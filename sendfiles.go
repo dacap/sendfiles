@@ -97,16 +97,25 @@ func scanIps(files []string) {
 	}
 }
 
-func sendFiles(files []string) {
+func sendFiles(files []string, ip string) {
 	if len(files) < 1 {
 		fmt.Println("You must specify at least one file to send")
 		return
 	}
 
-	fmt.Println("Searching for receiver...")
+	if ip != "" {
+		serverIp4 := net.ParseIP(ip)
+		if serverIp4 == nil {
+			log.Fatal("Invalid -ip address")
+		}
 
-	go scanIps(files)
+		connectToServer(serverIp4, files)
+	} else {
+		fmt.Println("Searching for receiver...")
 
-	// Wait for Enter key
-	bufio.NewReader(os.Stdin).ReadString('\n')
+		go scanIps(files)
+
+		// Wait for Enter key
+		bufio.NewReader(os.Stdin).ReadString('\n')
+	}
 }

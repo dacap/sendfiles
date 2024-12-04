@@ -10,17 +10,19 @@ import (
 )
 
 var key string
+var ip string
 var port int = DefaultPort
 
 func main() {
 	flag.StringVar(&key, "k", "", "key to receive files")
+	flag.StringVar(&ip, "ip", "", "IP of the receiver")
 	flag.IntVar(&port, "p", port, "TCP port")
 	flag.Parse()
 
 	if flag.NArg() < 1 {
 		receiveFiles()
 	} else {
-		sendFiles(flag.Args())
+		sendFiles(flag.Args(), ip)
 	}
 
 }
